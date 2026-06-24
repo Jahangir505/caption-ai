@@ -61,6 +61,13 @@ export async function POST(req: Request) {
     count: isPro ? Math.min(body.count ?? 3, 5) : 3,
   };
 
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json(
+      { error: "ANTHROPIC_API_KEY is not configured on the server." },
+      { status: 500 }
+    );
+  }
+
   try {
     const captions = await generateCaptions(input);
 
@@ -88,9 +95,10 @@ export async function POST(req: Request) {
       captionId: captionRow?.id ?? "",
     });
   } catch (err) {
-    console.error("Caption generation error:", err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("Caption generation error:", message);
     return NextResponse.json(
-      { error: "Failed to generate captions. Please try again." },
+      { error: message },
       { status: 500 }
     );
   }
