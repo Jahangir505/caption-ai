@@ -33,6 +33,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") ?? "/dashboard";
   const [error, setError] = useState("");
+  const [emailSent, setEmailSent] = useState("");
 
   const isLogin = mode === "login";
 
@@ -61,7 +62,16 @@ export default function AuthForm({ mode }: AuthFormProps) {
           email: data.email,
           password: data.password,
         });
-        if (error) throw error;
+        if (error) {
+          if (error.message.toLowerCase().includes("email not confirmed")) {
+            setError("Please confirm your email first. Check your inbox for a confirmation link.");
+          } else if (error.message.toLowerCase().includes("invalid login")) {
+            setError("Incorrect email or password.");
+          } else {
+            setError(error.message);
+          }
+          return;
+        }
         router.push(redirectTo);
         router.refresh();
       } else {
@@ -71,8 +81,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
           options: { data: { full_name: data.full_name } },
         });
         if (error) throw error;
-        router.push("/dashboard");
-        router.refresh();
+        setEmailSent(data.email);
       }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -120,6 +129,30 @@ export default function AuthForm({ mode }: AuthFormProps) {
               </a>
             </Button>
           </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (emailSent) {
+    return (
+      <Card className="w-full max-w-md shadow-lg">
+        <CardContent className="pt-8 pb-8 flex flex-col items-center text-center gap-4">
+          <div className="w-14 h-14 rounded-full bg-violet-100 flex items-center justify-center">
+            <svg className="w-7 h-7 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-xl font-bold">Check your email</h2>
+            <p className="text-sm text-muted-foreground mt-2">
+              We sent a confirmation link to <strong>{emailSent}</strong>.
+              Click it to activate your account, then come back to log in.
+            </p>
+          </div>
+          <Link href="/login" className="text-sm text-violet-600 hover:underline font-medium">
+            Back to login
+          </Link>
         </CardContent>
       </Card>
     );
