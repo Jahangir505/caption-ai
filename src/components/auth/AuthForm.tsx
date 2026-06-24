@@ -12,16 +12,13 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, AlertTriangle } from "lucide-react";
 
-const loginSchema = z.object({
+const formSchema = z.object({
   email: z.string().email("Enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  full_name: z.string().optional(),
 });
 
-const signupSchema = loginSchema.extend({
-  full_name: z.string().min(2, "Name must be at least 2 characters"),
-});
-
-type SignupData = z.infer<typeof signupSchema>;
+type SignupData = z.infer<typeof formSchema>;
 
 interface AuthFormProps {
   mode: "login" | "signup";
@@ -42,14 +39,21 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const {
     register,
     handleSubmit,
+    setError: setFieldError,
     formState: { errors, isSubmitting },
   } = useForm<SignupData>({
-    resolver: zodResolver(signupSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: { full_name: "", email: "", password: "" },
   });
 
   async function onSubmit(data: SignupData) {
     setError("");
+
+    if (!isLogin && (!data.full_name || data.full_name.trim().length < 2)) {
+      setFieldError("full_name", { message: "Name must be at least 2 characters" });
+      return;
+    }
+
     try {
       const supabase = createClient();
       if (isLogin) {
