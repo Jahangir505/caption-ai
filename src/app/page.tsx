@@ -1,101 +1,236 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Zap,
+  Globe,
+  Star,
+  Check,
+  ArrowRight,
+  Sparkles,
+  Camera,
+  Users,
+} from "lucide-react";
 
-export default function Home() {
+const features = [
+  {
+    icon: Sparkles,
+    title: "AI-Powered Generation",
+    desc: "Claude AI writes captions optimized for each platform's algorithm and culture.",
+  },
+  {
+    icon: Globe,
+    title: "English & Bengali",
+    desc: "Generate captions in English, Bengali (বাংলা), or both at once.",
+  },
+  {
+    icon: Zap,
+    title: "5 Platforms",
+    desc: "Instagram, Facebook, Twitter, LinkedIn, and TikTok — all with platform-specific rules.",
+  },
+  {
+    icon: Star,
+    title: "5 Tones",
+    desc: "Professional, funny, casual, inspirational, or promotional — you choose.",
+  },
+];
+
+const platforms = [
+  { name: "Instagram", icon: Camera, color: "text-pink-500" },
+  { name: "Twitter / X", icon: Zap, color: "text-sky-500" },
+  { name: "LinkedIn", icon: Users, color: "text-blue-600" },
+];
+
+const testimonials = [
+  {
+    name: "Rahim Uddin",
+    role: "Content Creator, Dhaka",
+    text: "আমি প্রতিদিন CaptionAI ব্যবহার করি। এটা আমার ইনস্টাগ্রাম এনগেজমেন্ট ৩× বাড়িয়ে দিয়েছে!",
+    avatar: "RU",
+  },
+  {
+    name: "Sarah M.",
+    role: "Digital Marketer, London",
+    text: "Finally an AI that understands platform nuances. My LinkedIn posts have never performed better.",
+    avatar: "SM",
+  },
+  {
+    name: "Farhan Khan",
+    role: "Freelancer, Chittagong",
+    text: "The Bengali caption support is incredible. No other tool does this as well.",
+    avatar: "FK",
+  },
+];
+
+export default function LandingPage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex flex-col">
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-violet-50 via-white to-purple-50 py-20 md:py-32">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+        <div className="container relative text-center space-y-8">
+          <Badge className="inline-flex gap-1.5 px-4 py-1.5 text-sm" variant="outline">
+            <Sparkles className="w-3.5 h-3.5 text-violet-600" />
+            Powered by Claude AI
+          </Badge>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+            Generate{" "}
+            <span className="bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+              viral captions
+            </span>
+            <br />
+            in seconds
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            AI-powered caption generator for Instagram, Facebook, Twitter, LinkedIn, and TikTok.
+            Supports English and Bengali. Free to start.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="xl" variant="gradient">
+              <Link href="/signup">
+                Start Free — 10 Captions/Day
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
+            </Button>
+            <Button asChild size="xl" variant="outline">
+              <Link href="/pricing">See Pricing</Link>
+            </Button>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            No credit card required · Free forever plan available
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Social proof bar */}
+      <section className="border-y bg-muted/30 py-6">
+        <div className="container">
+          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12 text-sm text-muted-foreground">
+            <span className="font-semibold text-foreground">Works with:</span>
+            {platforms.map((p) => (
+              <div key={p.name} className="flex items-center gap-1.5">
+                <p.icon className={`w-4 h-4 ${p.color}`} />
+                <span>{p.name}</span>
+              </div>
+            ))}
+            <span className="text-muted-foreground">+ Facebook · TikTok</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-20 md:py-28">
+        <div className="container">
+          <div className="text-center space-y-4 mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold">Everything you need to go viral</h2>
+            <p className="text-muted-foreground text-lg">
+              Engineered for content creators, marketers, and freelancers.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((f) => (
+              <div
+                key={f.title}
+                className="p-6 rounded-xl border bg-card hover:shadow-md transition-shadow space-y-3"
+              >
+                <div className="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center">
+                  <f.icon className="w-5 h-5 text-violet-600" />
+                </div>
+                <h3 className="font-semibold">{f.title}</h3>
+                <p className="text-sm text-muted-foreground">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="py-20 bg-muted/30">
+        <div className="container">
+          <div className="text-center space-y-4 mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold">How it works</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {[
+              { step: "1", title: "Describe your topic", desc: "Enter what your post is about — a product, event, mood, or idea." },
+              { step: "2", title: "Choose platform & tone", desc: "Select your platform and the vibe you want: professional, funny, inspirational..." },
+              { step: "3", title: "Get 3 viral captions", desc: "Claude AI generates 3 unique, platform-optimized captions in seconds." },
+            ].map((item) => (
+              <div key={item.step} className="text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-600 to-purple-600 text-white font-bold text-lg flex items-center justify-center mx-auto">
+                  {item.step}
+                </div>
+                <h3 className="font-semibold text-lg">{item.title}</h3>
+                <p className="text-muted-foreground text-sm">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 md:py-28">
+        <div className="container">
+          <div className="text-center space-y-4 mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold">Loved by creators</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {testimonials.map((t) => (
+              <div key={t.name} className="p-6 rounded-xl border bg-card space-y-4">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-sm leading-relaxed">&ldquo;{t.text}&rdquo;</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-400 to-purple-400 text-white text-xs flex items-center justify-center font-bold">
+                    {t.avatar}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">{t.name}</p>
+                    <p className="text-xs text-muted-foreground">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing teaser */}
+      <section className="py-20 bg-gradient-to-br from-violet-600 to-purple-700 text-white">
+        <div className="container text-center space-y-6">
+          <h2 className="text-3xl md:text-4xl font-bold">Simple, affordable pricing</h2>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center text-sm">
+            <div className="flex items-center gap-2">
+              <Check className="w-5 h-5 text-violet-200" />
+              Free plan: 10 captions/day
+            </div>
+            <div className="flex items-center gap-2">
+              <Check className="w-5 h-5 text-violet-200" />
+              Pro: $9/month or ৳399/month
+            </div>
+            <div className="flex items-center gap-2">
+              <Check className="w-5 h-5 text-violet-200" />
+              Unlimited captions on Pro
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="xl" className="bg-white text-violet-700 hover:bg-violet-50">
+              <Link href="/signup">Start for Free</Link>
+            </Button>
+            <Button
+              asChild
+              size="xl"
+              variant="outline"
+              className="border-white/30 text-white hover:bg-white/10"
+            >
+              <Link href="/pricing">View Plans</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
