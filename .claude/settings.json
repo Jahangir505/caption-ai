@@ -9,7 +9,10 @@
       "Bash(break)",
       "Bash(node -e ' *)",
       "Bash(echo \"# caption-ai\")",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)",
+      "Bash(npx vercel *)"
     ]
   }
 }

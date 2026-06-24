@@ -29,8 +29,6 @@ export default function SettingsClient({ profile }: Props) {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
   const { setProfile } = useAppStore();
-  const supabase = createClient();
-
   const initials = profile?.full_name
     ? profile.full_name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
     : profile?.email?.slice(0, 2).toUpperCase() ?? "?";
@@ -49,6 +47,7 @@ export default function SettingsClient({ profile }: Props) {
 
   async function onSubmit(data: FormData) {
     setError("");
+    const supabase = createClient();
     const { data: updated, error } = await supabase
       .from("profiles")
       .update({ full_name: data.full_name, country: data.country })
@@ -68,6 +67,7 @@ export default function SettingsClient({ profile }: Props) {
 
   async function handleDeleteAccount() {
     if (!confirm("Are you sure? This will permanently delete your account and all data.")) return;
+    const supabase = createClient();
     await supabase.rpc("delete_user");
     await supabase.auth.signOut();
     window.location.href = "/";

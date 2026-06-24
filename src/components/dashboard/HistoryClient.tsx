@@ -27,7 +27,6 @@ export default function HistoryClient({ initialCaptions }: Props) {
   const [platformFilter, setPlatformFilter] = useState("all");
   const [favFilter, setFavFilter] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
-  const supabase = createClient();
 
   const filtered = captions.filter((c) => {
     if (search && !c.topic.toLowerCase().includes(search.toLowerCase())) return false;
@@ -37,6 +36,7 @@ export default function HistoryClient({ initialCaptions }: Props) {
   });
 
   async function toggleFavorite(id: string, current: boolean) {
+    const supabase = createClient();
     await supabase.from("captions").update({ is_favorite: !current }).eq("id", id);
     setCaptions((prev) =>
       prev.map((c) => (c.id === id ? { ...c, is_favorite: !current } : c))
@@ -44,6 +44,7 @@ export default function HistoryClient({ initialCaptions }: Props) {
   }
 
   async function deleteCaption(id: string) {
+    const supabase = createClient();
     await supabase.from("captions").delete().eq("id", id);
     setCaptions((prev) => prev.filter((c) => c.id !== id));
   }
