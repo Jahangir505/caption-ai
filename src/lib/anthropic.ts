@@ -1,9 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { GenerateCaptionInput } from "@/types";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
-
 export async function generateCaptions(input: GenerateCaptionInput): Promise<string[]> {
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
   const { topic, platform, tone, language, keywords, count = 3 } = input;
 
   const platformGuide: Record<string, string> = {

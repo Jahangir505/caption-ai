@@ -1,17 +1,19 @@
 import { NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripeForWebhook } from "@/lib/stripe";
 import { createClient } from "@supabase/supabase-js";
 import { sendProUpgradeEmail } from "@/lib/resend";
 import Stripe from "stripe";
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
+  const stripe = getStripeForWebhook();
+
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
   const body = await req.text();
   const sig = req.headers.get("stripe-signature")!;
 
@@ -61,7 +63,6 @@ export async function POST(req: Request) {
         .single();
 
       if (existing) {
-        // current_period_end exists on the subscription object at runtime
         const periodEnd = (sub as unknown as Record<string, number>).current_period_end;
         await supabaseAdmin.from("subscriptions").update({
           status: sub.status === "active" ? "active" : sub.status === "past_due" ? "past_due" : "cancelled",

@@ -1,15 +1,18 @@
 import Stripe from "stripe";
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-05-27.dahlia",
-  typescript: true,
-});
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-05-27.dahlia",
+    typescript: true,
+  });
+}
 
 export async function createCheckoutSession(
   userId: string,
   email: string,
   customerId?: string | null
 ): Promise<string> {
+  const stripe = getStripe();
   const session = await stripe.checkout.sessions.create({
     customer: customerId ?? undefined,
     customer_email: customerId ? undefined : email,
@@ -30,9 +33,14 @@ export async function createCheckoutSession(
 }
 
 export async function createCustomerPortalSession(customerId: string): Promise<string> {
+  const stripe = getStripe();
   const session = await stripe.billingPortal.sessions.create({
     customer: customerId,
     return_url: `${process.env.NEXT_PUBLIC_APP_URL}/billing`,
   });
   return session.url;
+}
+
+export function getStripeForWebhook() {
+  return getStripe();
 }

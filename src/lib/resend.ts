@@ -1,10 +1,9 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
-
 const FROM = "CaptionAI <noreply@captionai.app>";
 
 export async function sendWelcomeEmail(to: string, name: string) {
+  const resend = new Resend(process.env.RESEND_API_KEY!);
   await resend.emails.send({
     from: FROM,
     to,
@@ -27,6 +26,7 @@ export async function sendWelcomeEmail(to: string, name: string) {
 }
 
 export async function sendProUpgradeEmail(to: string, name: string) {
+  const resend = new Resend(process.env.RESEND_API_KEY!);
   await resend.emails.send({
     from: FROM,
     to,
